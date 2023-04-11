@@ -1,0 +1,92 @@
+{% extends "layouts/main.html" %}
+
+
+{% block content %}
+<!-- <h1>Inicio</h1> -->
+{% load static %}
+
+<form method="POST" action="/publicar/">
+    {% csrf_token %}
+    <!-- {% if post is not None %}
+        <input type="number" value="{{post.id}}" name="id">
+    {% endif %} -->
+
+    <div class="form-group my-3">
+        <label>¿Qué estás pensando?</label>
+        <textarea class="form-control" name="text">{% if post is not None %}{{post.text}}{% endif %}</textarea>
+        
+    </div>
+
+    <button class="btn btn-primary" type="submit">Publicar</button>
+</form>
+<br/>
+{% if posts == None %}
+
+<h1>No hay publicaciones</h1>
+
+{% endif %}
+
+<label><b>Solo puedes ver tus publicaciones y las de tus michis de corazón</b> 😸</label>
+<br/>
+<br/>
+{% for p in posts %}
+<div class="card p-3 row bg-dark text-light">
+
+    <div class="col-12 row">
+        <img src="{% static 'img/icono.png' %}" alt="mi imagen" style="border-radius: 50%; width: 100px; height: 80px;">
+        <h1 class="col-4"><b>{{p.user}}</b></h1>
+        <p class="col-4">{{p.created}}</p>
+    </div>
+    <br/>
+    <h3>{{p.text}}</h3>
+    <div class="row">
+        <div class="col-1">
+            <form method="POST" action="/megusta/">
+                {% csrf_token %}
+                <input type="hidden" value="{{p.id}}" name="megusta">
+                <button class="btn btn-primary" type="submit">❤️</button>
+                
+            </form>
+        </div>
+       <div class="col-11">
+            <span><b>Le gusta a:</b> </span>
+            {% for m in p.megusta_set.all %}
+            <span>{{m.user}} </span>
+            {% endfor %}
+       </div>
+   </div>
+   <br/>
+
+    <div class=" px-5">
+        <div class="px-5">
+            {% if request.user.is_authenticated %}
+            <form method="POST" action="/comment/">
+                {% csrf_token %}
+                <input type="hidden" value="{{p.id}}" name="post">
+                <div class="form-group my-3">
+                    <label>Comentar</label>
+                    <textarea class="form-control" name="text" placeholder="Escribe un comentario"></textarea>
+                </div>
+                
+                <button class="btn btn-primary" type="submit">Enviar comentario</button>
+            </form>
+        {% endif %}
+        </div>
+    </div>
+    <br/>
+    <h5>Comentarios:</h5>
+    {% for c in p.comment_set.all %}
+        <div class="p-3">
+            <div class="card px-3">
+                <p><b>{{c.user}}</b>: {{ c.text }}</p>
+                <p>{{c.created}} </p>
+            </div>
+        </div>
+        {% endfor %}
+    
+</div>
+<br/>
+{% endfor %}
+
+
+{% endblock %}

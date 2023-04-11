@@ -1,0 +1,55 @@
+{% extends "layouts/main.html" %}
+{% load static %}
+
+
+{% block content %}
+<h1>Mis michis de corazón</h1>
+<br/>
+{% for a in agregados %}
+    <div class="card p-3 row bg-dark text-light" style="width: 650px; height: 80px;">
+       <div class="row col-12">
+        <div class="col-4">
+            <img src="{% static 'img/amigos.jpg' %}" alt="mi imagen" style="border-radius: 50%; width: 100px; height: 80px;">
+        </div>
+        <div class="col-4">
+                <h2>{{a.follow}}</h2>
+            </div>
+        <div class="col-4">
+            <form method="POST" action="/eliminar/">
+                {% csrf_token %}
+                <input type="hidden" value="{{a.follow}}" name="amigo">
+                <button class="btn btn-danger" type="submit">Desterrar michi</button>
+            </form>
+        </div>
+       </div>
+    </div>
+    <br/>
+{% endfor %}
+<br/>
+<h1>Michis huerfanos</h1>
+{% for u in sugerencias %}
+{% if u != usuario %}
+
+<div class="card p-3 row bg-dark text-light" style="width: 650px; height: 80px;">
+       <div class="row col-12">
+        <div class="col-4">
+            <img src="{% static 'img/enemigos.jpg' %}" alt="mi imagen" style="border-radius: 50%; width: 100px; height: 80px;">
+        </div>
+        <div class="col-4">
+                <h2>{{u}}</h2>
+            </div>
+        <div class="col-4">
+            <form method="POST" action="/seguir/">
+                {% csrf_token %}
+                <input type="hidden" value="{{u}}" name="amigo">
+                <button class="btn btn-primary" type="submit">Adoptar michi</button>
+            </form>
+        </div>
+       </div>
+    </div>
+    <br/>
+
+
+    {% endif %}
+{% endfor %}
+{% endblock %}

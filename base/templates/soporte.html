@@ -1,0 +1,36 @@
+{% extends "layouts/main.html" %}
+{% load static %}
+
+{% block content %}
+
+<h1>Michisoporte</h1>
+<br/>
+<label><b>Envíanos un mensaje y uno de nuestros michioperadores se pondrá en contacto contigo</b> 😸</label>
+<br/>
+<br/>
+<div class="card p-3 row bg-dark text-light">
+    <div class="row col-12">
+        <div class="col-5">
+            <img src="{% static 'img/soporte.jpg' %}" alt="mi imagen" style="border-radius: 50%; width: 250px; height: 200px;">
+        </div>
+        <div class="col-7">
+            <form method="POST" action="">
+                {% csrf_token %}
+        
+                <div class="form-group my-3">
+                    <label>Email</label>
+                    <input type="email" class="form-control" name="email" placeholder="Email">
+                </div>
+        
+                <div class="form-group my-3">
+                    <label>Sugerencia</label>
+                    <input type="text" class="form-control" name="sugerencia" placeholder="sugerencia">
+                </div>
+                <button class="btn btn-primary" type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}

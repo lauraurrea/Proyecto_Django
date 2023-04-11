@@ -1,0 +1,23 @@
+{% extends "layouts/main.html" %}
+
+{% block content %}
+
+<h1>Iniciar Sesión</h1>
+<form method="POST" action="">
+    {% csrf_token %}
+    <div class="form-group my-3">
+        <label>Usuario</label>
+        <input type="text" class="form-control" name="username" placeholder="Nombre de usuario">
+        
+    </div>
+    <div class="form-group my-3">
+        <label>Contraseña</label>
+        <input type="password" class="form-control" name="password" placeholder="Contraseña">
+    </div>
+    <div>
+
+        <a href="/registro">Aún no tengo cuenta</a>
+    </div>
+    <button class="btn btn-primary" type="submit">Iniciar Sesión</button>
+</form>
+{% endblock %}
